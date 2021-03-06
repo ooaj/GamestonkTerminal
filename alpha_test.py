@@ -1,3 +1,7 @@
+# TODO adjusted close, divident amount ve split coefficient eklenecek
+
+
+
 #!/usr/bin/env python
 
 import argparse
@@ -147,43 +151,49 @@ menu_parser.add_argument(
 # Print first welcome message and help
 print("\nWelcome to Didier's Gamestonk Terminal\n")
 
-# Loop forever and ever
-while True:
-    # Get input command from user
-    as_input = input("> ")
+# # # as_input = input("> ")
+as_input = 'load -t GME'
+# Parse main command of the list of possible commands
+(ns_known_args, l_args) = menu_parser.parse_known_args(as_input.split())
 
-    # Is command empty
-    if not as_input:
-        print("")
-        continue
+elif (ns_known_args.opt == "quit") or (ns_known_args.opt == "q"):
+    print("Hope you made money today. Good bye my lover, good bye my friend.\n")
+    return
 
-    # Parse main command of the list of possible commands
-    try:
-        (ns_known_args, l_args) = menu_parser.parse_known_args(as_input.split())
+elif ns_known_args.opt == "clear":
+    print("Clearing stock ticker to be used for analysis")
+    s_ticker = ""
+    s_start = ""
 
-    except SystemExit:
-        print("The command selected doesn't exist\n")
-        continue
-
-    elif (ns_known_args.opt == "quit") or (ns_known_args.opt == "q"):
-        print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-        return
-
-    elif ns_known_args.opt == "clear":
-        print("Clearing stock ticker to be used for analysis")
-        s_ticker = ""
-        s_start = ""
-
-    elif ns_known_args.opt == "load":
-        [s_ticker, s_start, s_interval, df_stock] = load(
-            l_args, s_ticker, s_start, s_interval, df_stock
-        )
+elif ns_known_args.opt == "load":
+    [s_ticker, s_start, s_interval, df_stock] = load(
+        l_args, s_ticker, s_start, s_interval, df_stock
+    )
 
 #    elif ns_known_args.opt == "view":
- #       view(l_args, s_ticker, s_start, s_interval, df_stock)
+#       view(l_args, s_ticker, s_start, s_interval, df_stock)
 
 
 ticker, start, interval, df = load(l_args, s_ticker, s_start, s_interval, df_stock)
 df0 = df.iloc[0] # first row to see what alpha is doing.
-df0.round(3)
+df0.round(2)
+
+
+# invest.py part
+
+stock_name = 'COSMO'
+data = investpy.get_stock_historical_data(
+        stock = stock_name, country = 'turkey', 
+        from_date = '01/02/2021', to_date =  '05/03/2021'
+        )
+# currency sutununa gerek yok
+data.drop(columns='Currency', inplace=True)
+# sutun isimlerini gamestonk ile ayni hale getir
+data.rename(columns={
+    'Open': '1. open',
+    'High': '2. high',
+    'Low': '3. low',
+    'Close': '4. close',
+    'Volume': '6. volume'
+    })
 
