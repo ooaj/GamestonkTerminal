@@ -1,5 +1,5 @@
 # TODO adjusted close, divident amount ve split coefficient eklenecek
-
+# simdilik random sayi var, algoritmaya (gamestonk terminal) etkisi var mi? 
 
 
 #!/usr/bin/env python
@@ -189,11 +189,16 @@ data = investpy.get_stock_historical_data(
 # currency sutununa gerek yok
 data.drop(columns='Currency', inplace=True)
 # sutun isimlerini gamestonk ile ayni hale getir
-data.rename(columns={
+data = data.rename(columns={
     'Open': '1. open',
     'High': '2. high',
     'Low': '3. low',
     'Close': '4. close',
     'Volume': '6. volume'
     })
+
+# simdilik 5 7 ve 8i rastgele doldur. algoritmayi ekliyorsa, hesap yapmak lazim 
+data.insert(loc = 4, column='5. adjusted close', value= 1.0)
+data.insert(loc = 6, column='7. didivent amount', value= 0.0)
+data.insert(loc = 7, column='8. split coefficient', value= 0.0)
 
